@@ -1,10 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
-// ─── GOOGLE FONTS ─────────────────────────────────────────────────────────────
-const fontLink = document.createElement("link");
-fontLink.rel = "stylesheet";
-fontLink.href = "https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap";
-document.head.appendChild(fontLink);
+// ─── LOGO URL ─────────────────────────────────────────────────────────────────
+const LOGO_URL = "https://raw.githubusercontent.com/Kyu-u/Lemoncito-Coupon/main/logo";
 
 // ─── THEME ────────────────────────────────────────────────────────────────────
 const T = {
@@ -25,9 +22,9 @@ const T = {
 
 // ─── PRODUCTS ─────────────────────────────────────────────────────────────────
 const PRODUCTS = [
-  { id: 1, name: "Lemoncito Extract", price: 149, emoji: "🧪", desc: "Pure concentrated lemon extract.", tag: "Premium" },
-  { id: 2, name: "Lemoncito Juice",   price: 89,  emoji: "🍾", desc: "Classic Lemoncito juice, chilled and naturally refreshing. No preservatives.", tag: "Bestseller" },
-  { id: 3, name: "Raw Lemoncito",   price: 89,  emoji: "🍋", desc: "Pure Lemoncito for your own squeezing", tag: "Bestseller" },
+  { id: 1, name: "LemonAide Extract", price: 149, emoji: "🧪", desc: "Pure concentrated lemon extract.", tag: "Premium" },
+  { id: 2, name: "LemonAide Juice",   price: 89,  emoji: "🍾", desc: "Classic LemonAide juice, chilled and naturally refreshing. No preservatives.", tag: "Bestseller" },
+  { id: 3, name: "Lemoncito",     price: 89,  emoji: "🍋", desc: "Pure Lemoncito for your own squeezing", tag: "Bestseller" },
 ];
 
 // ─── ACHIEVEMENTS ─────────────────────────────────────────────────────────────
@@ -51,12 +48,22 @@ const initState = () => ({
 const medal      = (r) => r === 1 ? "🥇" : r === 2 ? "🥈" : r === 3 ? "🥉" : `#${r}`;
 const medalColor = (r) => r === 1 ? "#FFD700" : r === 2 ? "#C0C0C0" : r === 3 ? "#CD7F32" : T.gray;
 
+// ─── APP LOGO ─────────────────────────────────────────────────────────────────
+const AppLogo = ({ size = 36, style = {} }) => (
+  <img
+    src={LOGO_URL}
+    alt="LemonAide logo"
+    style={{ width: size, height: size, objectFit: "contain", borderRadius: 8, ...style }}
+    onError={e => { e.target.style.display = "none"; }}
+  />
+);
+
 // ─── AD BANNER ────────────────────────────────────────────────────────────────
 const AdBanner = ({ style = {} }) => {
   const ads = [
     { bg: "#FFF3CD", text: "🌞 Summer Special! Fresh juice delivered to your door.", accent: "#E6A800" },
-    { bg: "#D4EDDA", text: "🥤 Stay hydrated. Lemoncito — made with real lemons.",  accent: "#2E9E4F" },
-    { bg: "#FFE0E0", text: "🎯 Advertise here · contact@lemoncito.app",             accent: "#E84855" },
+    { bg: "#D4EDDA", text: "🥤 Stay hydrated. LemonAide — made with real lemons.",  accent: "#2E9E4F" },
+    { bg: "#FFE0E0", text: "🎯 Advertise here · contact@lemonade.app",              accent: "#E84855" },
   ];
   const [idx, setIdx] = useState(0);
   useEffect(() => { const t = setInterval(() => setIdx(i => (i+1) % ads.length), 4000); return () => clearInterval(t); }, []);
@@ -164,8 +171,13 @@ const LeaderboardScreen = ({ appState, setAppState, showToast }) => {
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%", background: T.cream }}>
       <div style={{ background: "linear-gradient(135deg,#1a3d1a,#2E9E4F)", padding: "18px 20px 20px" }}>
-        <div style={{ fontFamily: "'Baloo 2',sans-serif", fontWeight: 800, fontSize: 22, color: T.white }}>Leaderboard 🏆</div>
-        <div style={{ fontFamily: "'Nunito',sans-serif", fontSize: 12, color: "rgba(255,255,255,0.7)", marginTop: 2 }}>Top Lemon Tappers worldwide</div>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <AppLogo size={36} />
+          <div>
+            <div style={{ fontFamily: "'Baloo 2',sans-serif", fontWeight: 800, fontSize: 22, color: T.white }}>Leaderboard 🏆</div>
+            <div style={{ fontFamily: "'Nunito',sans-serif", fontSize: 12, color: "rgba(255,255,255,0.7)", marginTop: 2 }}>Top LemonAide Tappers worldwide</div>
+          </div>
+        </div>
         <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
           <div style={{ background: "rgba(255,255,255,0.15)", borderRadius: 12, padding: "8px 16px", textAlign: "center", flex: 1 }}>
             <div style={{ fontFamily: "'Baloo 2',sans-serif", fontWeight: 800, fontSize: 20, color: T.yellow }}>{appState.bestScore}</div>
@@ -181,7 +193,6 @@ const LeaderboardScreen = ({ appState, setAppState, showToast }) => {
       </div>
 
       <div style={{ flex: 1, overflowY: "auto", padding: "14px 16px", display: "flex", flexDirection: "column", gap: 12 }}>
-        {/* Submit panel */}
         {!submitted ? (
           <div style={{ background: T.white, borderRadius: 16, padding: "14px 16px", boxShadow: "0 2px 10px #0009" }}>
             <div style={{ fontFamily: "'Baloo 2',sans-serif", fontWeight: 700, fontSize: 15, color: T.dark, marginBottom: 10 }}>
@@ -211,7 +222,6 @@ const LeaderboardScreen = ({ appState, setAppState, showToast }) => {
 
         <AdBanner />
 
-        {/* Rankings */}
         <div style={{ fontFamily: "'Baloo 2',sans-serif", fontWeight: 700, fontSize: 14, color: T.dark, marginBottom: 4 }}>Rankings</div>
         {loading ? (
           <div style={{ textAlign: "center", padding: 30, color: T.gray, fontFamily: "'Nunito',sans-serif" }}>Loading scores...</div>
@@ -307,9 +317,12 @@ const GameScreen = ({ appState, setAppState, setScreen, showToast }) => {
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%", background: T.cream }}>
       <div style={{ padding: "14px 20px 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <div>
-          <div style={{ fontFamily: "'Baloo 2',sans-serif", fontWeight: 800, fontSize: 22, color: T.dark }}>Lemon Tap 🍋</div>
-          <div style={{ fontFamily: "'Nunito',sans-serif", fontSize: 12, color: T.gray }}>Tap lemons before they fall!</div>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <AppLogo size={28} />
+          <div>
+            <div style={{ fontFamily: "'Baloo 2',sans-serif", fontWeight: 800, fontSize: 22, color: T.dark }}>Lemon Tap 🍋</div>
+            <div style={{ fontFamily: "'Nunito',sans-serif", fontSize: 12, color: T.gray }}>Tap lemons before they fall!</div>
+          </div>
         </div>
         <div style={{ textAlign: "right" }}>
           <div style={{ fontFamily: "'Nunito',sans-serif", fontSize: 11, color: T.gray }}>Best</div>
@@ -423,7 +436,7 @@ const ShopScreen = ({ appState, setAppState, showToast }) => {
       <div style={{ fontSize: 72 }}>🎉</div>
       <div style={{ textAlign: "center" }}>
         <div style={{ fontFamily: "'Baloo 2',sans-serif", fontWeight: 800, fontSize: 22, color: T.dark }}>Order Placed!</div>
-        <div style={{ fontFamily: "'Nunito',sans-serif", fontSize: 14, color: T.gray, marginTop: 6 }}>Your Lemoncito is on its way. 🍋</div>
+        <div style={{ fontFamily: "'Nunito',sans-serif", fontSize: 14, color: T.gray, marginTop: 6 }}>Your LemonAide is on its way. 🍋</div>
       </div>
       <button onClick={() => setView("shop")} style={{ background: `linear-gradient(135deg,${T.green},#238a3f)`, color: T.white, border: "none", borderRadius: 14, padding: "13px 36px", fontFamily: "'Baloo 2',sans-serif", fontWeight: 800, fontSize: 16, cursor: "pointer" }}>Back to Shop</button>
     </div>
@@ -476,9 +489,12 @@ const ShopScreen = ({ appState, setAppState, showToast }) => {
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%", background: T.cream }}>
       <div style={{ padding: "14px 20px 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <div>
-          <div style={{ fontFamily: "'Baloo 2',sans-serif", fontWeight: 800, fontSize: 22, color: T.dark }}>Shop 🛒</div>
-          <div style={{ fontFamily: "'Nunito',sans-serif", fontSize: 12, color: T.gray }}>Fresh Lemoncito, delivered</div>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <AppLogo size={28} />
+          <div>
+            <div style={{ fontFamily: "'Baloo 2',sans-serif", fontWeight: 800, fontSize: 22, color: T.dark }}>Shop 🛒</div>
+            <div style={{ fontFamily: "'Nunito',sans-serif", fontSize: 12, color: T.gray }}>Fresh LemonAide, delivered</div>
+          </div>
         </div>
         {cartQty > 0 && (
           <button onClick={() => setView("cart")} style={{ background: T.green, color: T.white, border: "none", borderRadius: 12, padding: "8px 14px", fontFamily: "'Baloo 2',sans-serif", fontWeight: 700, fontSize: 14, cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
@@ -515,9 +531,12 @@ const WalletScreen = ({ appState, setScreen }) => {
   const available = appState.coupons.filter(c => !c.used), used = appState.coupons.filter(c => c.used);
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%", background: T.cream }}>
-      <div style={{ padding: "14px 20px 0" }}>
-        <div style={{ fontFamily: "'Baloo 2',sans-serif", fontWeight: 800, fontSize: 22, color: T.dark }}>Wallet 🎟️</div>
-        <div style={{ fontFamily: "'Nunito',sans-serif", fontSize: 12, color: T.gray }}>Your coupons & achievements</div>
+      <div style={{ padding: "14px 20px 0", display: "flex", alignItems: "center", gap: 8 }}>
+        <AppLogo size={28} />
+        <div>
+          <div style={{ fontFamily: "'Baloo 2',sans-serif", fontWeight: 800, fontSize: 22, color: T.dark }}>Wallet 🎟️</div>
+          <div style={{ fontFamily: "'Nunito',sans-serif", fontSize: 12, color: T.gray }}>Your coupons & achievements</div>
+        </div>
       </div>
       <div style={{ display: "flex", margin: "12px 16px 0", background: T.grayLt, borderRadius: 12, padding: 4 }}>
         {["coupons", "achievements"].map(t => (
@@ -552,8 +571,21 @@ const HomeScreen = ({ appState, setScreen }) => {
     <div style={{ display: "flex", flexDirection: "column", height: "100%", background: T.cream, overflowY: "auto" }}>
       <div style={{ background: "linear-gradient(135deg,#1a3d1a 0%,#2E9E4F 100%)", padding: "26px 20px 28px", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: -20, right: -20, fontSize: 110, opacity: 0.12, transform: "rotate(-15deg)" }}>🍋</div>
-        <div style={{ fontFamily: "'Baloo 2',sans-serif", fontWeight: 800, fontSize: 28, color: T.white }}>Lemoncito 🍋</div>
-        <div style={{ fontFamily: "'Nunito',sans-serif", fontSize: 14, color: "rgba(255,255,255,0.7)", marginTop: 2 }}>Play. Earn. Shop Fresh.</div>
+
+        {/* Logo + App name row */}
+        <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 4 }}>
+          <img
+            src={LOGO_URL}
+            alt="LemonAide"
+            style={{ width: 56, height: 56, objectFit: "contain", borderRadius: 14, background: "rgba(255,255,255,0.15)", padding: 6, flexShrink: 0 }}
+            onError={e => { e.target.style.display = "none"; }}
+          />
+          <div>
+            <div style={{ fontFamily: "'Baloo 2',sans-serif", fontWeight: 800, fontSize: 28, color: T.white, lineHeight: 1.1 }}>LemonAide 🍋</div>
+            <div style={{ fontFamily: "'Nunito',sans-serif", fontSize: 14, color: "rgba(255,255,255,0.7)", marginTop: 2 }}>Play. Earn. Shop Fresh.</div>
+          </div>
+        </div>
+
         <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
           {[["Games", appState.gamesPlayed], ["Coupons", available.length], ["Badges", `${unlockedCount}/${ACHIEVEMENTS_DEF.length}`]].map(([l, v]) => (
             <div key={l} style={{ background: "rgba(255,255,255,0.15)", borderRadius: 14, padding: "10px 16px", flex: 1, textAlign: "center" }}>
@@ -579,9 +611,9 @@ const HomeScreen = ({ appState, setScreen }) => {
           <div style={{ fontFamily: "'Baloo 2',sans-serif", fontWeight: 700, fontSize: 14, color: T.dark, marginBottom: 10 }}>Quick Actions</div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
             {[
-              { id: "game",        emoji: "🎮", label: "Play Game",   sub: "Earn coupons",  bg: `linear-gradient(135deg,${T.yellow},${T.yellowDk})`, tc: T.dark  },
-              { id: "shop",        emoji: "🛒", label: "Shop",        sub: "Fresh products", bg: `linear-gradient(135deg,${T.green},#238a3f)`,         tc: T.white },
-              { id: "leaderboard", emoji: "🏆", label: "Leaderboard", sub: "Top players",    bg: "linear-gradient(135deg,#1a3d1a,#2E9E4F)",            tc: T.white },
+              { id: "game",        emoji: "🎮", label: "Play Game",   sub: "Earn coupons",         bg: `linear-gradient(135deg,${T.yellow},${T.yellowDk})`, tc: T.dark  },
+              { id: "shop",        emoji: "🛒", label: "Shop",        sub: "Fresh products",        bg: `linear-gradient(135deg,${T.green},#238a3f)`,         tc: T.white },
+              { id: "leaderboard", emoji: "🏆", label: "Leaderboard", sub: "Top players",           bg: "linear-gradient(135deg,#1a3d1a,#2E9E4F)",            tc: T.white },
               { id: "wallet",      emoji: "🎟️", label: "Wallet",      sub: `${available.length} coupons`, bg: T.white, tc: T.dark, border: `2px solid ${T.grayLt}` },
             ].map(btn => (
               <button key={btn.id} onClick={() => setScreen(btn.id)} style={{ background: btn.bg, border: btn.border || "none", borderRadius: 18, padding: "18px 12px", display: "flex", flexDirection: "column", alignItems: "center", gap: 4, cursor: "pointer", boxShadow: "0 3px 12px #00000018" }}>

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import logoImg from "./assets/lemoncito-logo.png";
 
 // ─── THEME ────────────────────────────────────────────────────────────────────
 const T = {

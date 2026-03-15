@@ -59,26 +59,3 @@ npx cap open android
 3. Find your APK at: `android/app/build/outputs/apk/debug/app-debug.apk`
 
 ---
-
-## PWA (installable without APK)
-
-Add to `index.html` inside `<head>`:
-```html
-<link rel="manifest" href="/manifest.json">
-```
-
-Create `public/manifest.json`:
-```json
-{
-  "name": "Lemoncito",
-  "short_name": "Lemoncito",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#1a3d1a",
-  "theme_color": "#2E9E4F",
-  "icons": [{ "src": "/lemon.svg", "sizes": "any", "type": "image/svg+xml" }]
-}
-```
-
-Deploy to any host (Netlify, Vercel, GitHub Pages) and Android users can
-"Add to Home Screen" from Chrome — no Play Store needed.
